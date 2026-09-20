@@ -1,0 +1,49 @@
+generated: '2026-09-19'
+method: probed
+source: https://a2a-browser.digiant.nz/.well-known/agent.json, POST https://a2a-browser.digiant.nz/ (JSON-RPC probe), response headers, 2026-09-20; no OpenAPI or docs site exists to derive from
+summary: >-
+  The provider self-declares A2A 0.3 in its agent card and answers JSON-RPC 2.0 envelopes at the host root; the card
+  fails the A2A 1.0.0 hard check on protocolVersion (grade flavored, see a2a/digiant-nz-a2a.yml). No OAuth, OIDC, RFC 9457,
+  pagination or idempotency standard is claimed or observed. No domain standard applies to a pay-per-search retrieval
+  agent beyond A2A itself, so none is asserted.
+conformance:
+- id: a2a
+  name: Agent2Agent protocol
+  conforms: partial
+  declared_version: '0.3'
+  evidence: 'agent card field protocol: "a2a/0.3"; card served at legacy /.well-known/agent.json; canonical /.well-known/agent-card.json 404; no protocolVersion field; capabilities object and skills array present'
+  detail: a2a/digiant-nz-a2a.yml
+- id: jsonrpc-2.0
+  name: JSON-RPC 2.0
+  conforms: true
+  evidence: 'POST / with {"jsonrpc":"2.0","id":1,"method":"tasks/get"} answered 200 {"jsonrpc":"2.0","id":1,"error":{"code":-32601,"message":"Method not found"}} — a spec-shaped error object with the reserved -32601 code'
+- id: hsts
+  name: HTTP Strict Transport Security (RFC 6797)
+  conforms: true
+  evidence: 'Strict-Transport-Security: max-age=63072000; includeSubDomains; preload on every a2a-browser.digiant.nz response'
+- id: oauth2
+  conforms: false
+  evidence: no OAuth flow, no /.well-known/oauth-authorization-server (404), identity is an Ed25519 public key
+- id: oidc
+  conforms: false
+  evidence: /.well-known/openid-configuration 404
+- id: rfc9457
+  conforms: false
+  evidence: errors are JSON-RPC error objects and FastAPI {"detail"} bodies, not application/problem+json
+- id: rfc9116
+  name: security.txt
+  conforms: false
+  evidence: /.well-known/security.txt 404 on a2a-browser.digiant.nz; unverifiable (TLS mismatch) on digiant.nz
+- id: rfc9727
+  name: API catalog
+  conforms: false
+  evidence: /.well-known/api-catalog 404
+- id: pagination
+  conforms: false
+  evidence: no pagination parameters published
+- id: idempotency
+  conforms: false
+  evidence: no Idempotency-Key or nonce mechanism published (conventions/digiant-nz-conventions.yml)
+domain_standard:
+  asserted: false
+  note: A retrieval/search agent has no sector standard (no SCIM, OData, OpenRTB, HL7 or similar applies); A2A is recorded above as the protocol standard. Reward-only rule — nothing invented to fill the slot.

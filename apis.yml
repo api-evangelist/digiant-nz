@@ -1,18 +1,70 @@
 aid: digiant-nz
 name: digiantnz
-description: 'digiantnz is a company surfaced via the API Evangelist harvest backlog (source: a2a-registry)
-  and added to the network as a stub for full-pipeline profiling.'
+description: >-
+  digiantnz is a Christchurch, New Zealand operator that runs a2a-browser, a self-hosted, account-less, pay-per-query web
+  retrieval agent published as an A2A 0.3 agent card at a2a-browser.digiant.nz. The agent exposes two skills over a JSON-RPC
+  2.0 endpoint — Web Search (SERP query with LLM synthesis and entity extraction) and Page Fetch (Playwright-rendered fetch
+  with a 50k-character cap) — identifies callers by an Ed25519 public key instead of a signup, runs a free FIFO tier at
+  10 requests/hour, and quotes a paid tier live in satoshis (10 per search, 20 per fetch, 1,000 minimum, Lightning) that
+  the card still marks alpha. No OpenAPI, documentation site, MCP server or SDK is published; the registrable domain
+  digiant.nz redirects to a Web3 name (digiant.crypto) that public DNS does not resolve.
 url: https://raw.githubusercontent.com/api-evangelist/digiant-nz/refs/heads/main/apis.yml
 x-type: company
 x-source: harvest:a2a-registry
-x-tier: stub
-x-tier-reason: harvest
+x-tier: profiled
+x-tier-reason: full enrichment pass local-v3 on 2026-09-19 (was a harvest stub)
 specificationVersion: '0.20'
 created: '2026-09-19'
 modified: '2026-09-19'
 tags:
 - Company
-apis: []
+- A2A
+- Agents
+- Web Search
+- Web Scraping
+- Search
+- Micropayments
+- Lightning
+- New Zealand
+apis:
+- aid: digiant-nz:a2a-browser-agent
+  name: a2a-browser A2A Agent
+  description: >-
+    Pay-per-search web agent (version 0.1.0-alpha) served from a2a-browser.digiant.nz: a JSON-RPC 2.0 POST endpoint at the
+    host root, an A2A agent card at the legacy /.well-known/agent.json path (the canonical agent-card.json is 404), a live
+    satoshi price quote at /quote and a JSON health signal at /health. Skills browser/search (SERP query with LLM synthesis,
+    "EnrichedResult v3.0") and browser/fetch (Playwright page fetch with entity extraction). Free tier live at 10/hour;
+    paid tier not yet open. robots.txt disallows crawlers from /search and /fetch.
+  humanURL: https://a2aregistry.org/agents/a2a-browser
+  baseURL: https://a2a-browser.digiant.nz
+  tags:
+  - A2A
+  - Agents
+  - Web Search
+  - Web Scraping
+  properties:
+  - type: AgentCard
+    url: a2a/digiant-nz-a2a.yml
+  - type: AgentCard
+    name: provider-hosted card (legacy path; verbatim copy at a2a/digiant-nz-agent-card.json)
+    url: https://a2a-browser.digiant.nz/.well-known/agent.json
+  - type: Authentication
+    url: authentication/digiant-nz-authentication.yml
+  - type: Conventions
+    url: conventions/digiant-nz-conventions.yml
+  - type: ErrorCatalog
+    url: errors/digiant-nz-problem-types.yml
+  - type: RateLimits
+    url: rate-limits/digiant-nz-rate-limits.yml
+  - type: Plans
+    url: plans/digiant-nz-plans-pricing.yml
+  - type: Pricing
+    name: machine-readable price quote (sats per search/fetch)
+    url: https://a2a-browser.digiant.nz/quote
+  - type: Lifecycle
+    url: lifecycle/digiant-nz-lifecycle.yml
+  - type: Conformance
+    url: conformance/digiant-nz-conformance.yml
 maintainers:
 - FN: Kin Lane
   email: kin@apievangelist.com
@@ -21,3 +73,20 @@ maintainers:
 common:
 - type: Website
   url: https://digiant.nz/
+- type: GitHubOrganization
+  url: https://github.com/digiantnz
+- type: WellKnown
+  url: well-known/digiant-nz-well-known.yml
+- type: LLMsTxt
+  url: llms/digiant-nz-llms.txt
+- type: Packages
+  url: packages/digiant-nz-packages.yml
+- type: RegulatoryPosture
+  url: regulatory/digiant-nz-regulatory-posture.yml
+- type: DomainSecurity
+  url: security/digiant-nz-domain-security.yml
+x-enrichment:
+  date: '2026-09-19'
+  status: enriched
+  artifacts_added: 14
+  pass: local-v3

@@ -1,0 +1,34 @@
+generated: '2026-09-19'
+method: probed
+source: https://a2a-browser.digiant.nz/.well-known/agent.json (tiers.free.rate_limit), response headers observed on GET /health, /quote and POST / on 2026-09-20
+docs: null
+limit_count: 1
+summary: >-
+  One published limit: the free tier is capped at 10 requests per hour (agent card tiers.free.rate_limit "10/hour", FIFO
+  queue). The paid tier states no numeric limit — it is a fee-plus-age priority queue and is not yet open. No rate-limit
+  header of any kind was observed on the responses captured; the exhaustion status code is undocumented and was not
+  provoked (robots.txt disallows /search and /fetch to crawlers, so the skill endpoints were not exercised).
+rate_limits:
+- name: Free tier
+  scope: per-agent (ed25519 public key = agent_id)
+  limit: 10
+  window: 1h
+  metric: request
+  burst: null
+  queue: FIFO
+  source: https://a2a-browser.digiant.nz/.well-known/agent.json
+- name: Paid tier
+  scope: per-agent
+  limit: null
+  window: null
+  metric: request
+  queue: fee+age priority matching engine
+  note: not yet open; no numeric limit published
+  source: https://a2a-browser.digiant.nz/.well-known/agent.json
+headers:
+  documented: []
+  observed_on_200: [X-Request-Id, Strict-Transport-Security, X-Content-Type-Options, X-Frame-Options]
+  rate_limit_headers: none observed (no X-RateLimit-*, RateLimit-*, or Retry-After)
+response_codes:
+  throttled: unknown (undocumented)
+  observed: {get_root: 405, post_unknown_method: '200 with JSON-RPC error -32601'}

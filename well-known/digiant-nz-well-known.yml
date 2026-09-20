@@ -1,0 +1,102 @@
+generated: '2026-09-19'
+method: probed
+source: >-
+  Live GET probes of /.well-known/security.txt, /openid-configuration, /oauth-authorization-server, /oauth-protected-resource,
+  /api-catalog, /ai-plugin.json, /agent-card.json and /agent.json (plus /llms.txt, /openapi.json, /swagger.json, /mcp) on
+  the three hosts the record knows, 2026-09-19/20. Every row is a request that was issued; every status is the one returned.
+summary:
+  hosts_probed: 3
+  paths_probed: 30
+  documents_served: 1
+  note: >-
+    The only discovery document this provider serves is the A2A Agent Card at the legacy /.well-known/agent.json path on
+    a2a-browser.digiant.nz (saved verbatim to a2a/digiant-nz-agent-card.json). The registrable domain digiant.nz serves a
+    cPanel host certificate whose SANs (cpanel., cpcalendars., mail., webdisk.digiant.nz) do not cover digiant.nz or www, so
+    every HTTPS probe fails TLS verification (recorded as status 0); over plain HTTP (and with verification disabled) the host
+    301s to http://digiant.crypto/, a Web3 name that does not resolve in public DNS. No security.txt, OIDC, OAuth, API catalog,
+    ai-plugin.json, llms.txt, OpenAPI or MCP document on any host. api./docs./mcp./app.digiant.nz do not resolve.
+hosts:
+- host: a2a-browser.digiant.nz
+  role: A2A agent host (JSON-RPC endpoint at /, agent card, /health, /quote)
+  documents:
+  - path: /.well-known/agent.json
+    status: 200
+    content_type: application/json
+    file: ../a2a/digiant-nz-agent-card.json
+    bytes: 2299
+    standard: A2A Agent Card (legacy pre-0.3 path)
+  - path: /.well-known/agent-card.json
+    status: 404
+    content_type: text/html
+    standard: A2A Agent Card (canonical path)
+  - path: /.well-known/security.txt
+    status: 404
+    content_type: text/html
+    standard: RFC 9116
+  - path: /.well-known/openid-configuration
+    status: 404
+    content_type: text/html
+    standard: OpenID Connect Discovery 1.0
+  - path: /.well-known/oauth-authorization-server
+    status: 404
+    content_type: text/html
+    standard: RFC 8414
+  - path: /.well-known/oauth-protected-resource
+    status: 404
+    content_type: text/html
+    standard: RFC 9728
+  - path: /.well-known/api-catalog
+    status: 404
+    content_type: text/html
+    standard: RFC 9727
+  - path: /.well-known/ai-plugin.json
+    status: 404
+    content_type: text/html
+  - path: /llms.txt
+    status: 404
+    content_type: text/html
+  - path: /openapi.json
+    status: 404
+    content_type: text/html
+  - path: /mcp
+    status: 404
+    content_type: text/html
+- host: digiant.nz
+  role: registrable domain (Website pointer); cPanel shared host, redirects to a Web3 domain
+  tls_note: certificate CN=cpcalendars.digiant.nz, SANs do not include digiant.nz — HTTPS verification fails on every path
+  http_redirect: 'http://digiant.nz/ -> 301 http://digiant.crypto/ (digiant.crypto does not resolve in public DNS)'
+  documents:
+  - path: /.well-known/security.txt
+    status: 0
+    note: TLS hostname mismatch; unverifiable
+  - path: /.well-known/openid-configuration
+    status: 0
+    note: TLS hostname mismatch; unverifiable
+  - path: /.well-known/oauth-authorization-server
+    status: 0
+    note: TLS hostname mismatch; unverifiable
+  - path: /.well-known/oauth-protected-resource
+    status: 0
+    note: TLS hostname mismatch; unverifiable
+  - path: /.well-known/api-catalog
+    status: 0
+    note: TLS hostname mismatch; unverifiable
+  - path: /.well-known/ai-plugin.json
+    status: 0
+    note: TLS hostname mismatch; unverifiable
+  - path: /.well-known/agent-card.json
+    status: 0
+    note: TLS hostname mismatch; unverifiable
+  - path: /.well-known/agent.json
+    status: 0
+    note: TLS hostname mismatch; unverifiable
+- host: www.digiant.nz
+  role: www alias (same A record, same certificate mismatch)
+  documents:
+  - path: /.well-known/security.txt
+    status: 0
+    note: TLS hostname mismatch; unverifiable
+  - path: /.well-known/agent-card.json
+    status: 0
+    note: TLS hostname mismatch; unverifiable
+unresolved_hosts: [api.digiant.nz, docs.digiant.nz, mcp.digiant.nz, app.digiant.nz]

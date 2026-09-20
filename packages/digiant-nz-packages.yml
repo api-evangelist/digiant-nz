@@ -1,0 +1,29 @@
+generated: '2026-09-19'
+method: searched
+source: https://api.github.com/users/digiantnz/repos, https://raw.githubusercontent.com/digiantnz/sovereign-a2a/main/README.md, https://pypi.org/pypi/sovereign-a2a/json (404), https://pypi.org/pypi/a2a-browser/json (404), https://registry.npmjs.org/@digiantnz%2fa2a-browser (404), npm search "a2a-browser" (no first-party hit), 2026-09-19
+summary: >-
+  No client SDK for the a2a-browser agent is published on any registry. The operator's GitHub user (digiantnz) ships one
+  installable first-party library, sovereign-a2a — a single-file Python module of A2A/JSON-RPC message primitives
+  (request, success, error, partial) installed straight from GitHub — plus three unpublished repos (a2a-nanobot,
+  a2a-registry, a2a-voice). The a2a-browser repository the agent card links to (github.com/digiantnz/a2a-browser) answered
+  404. sovereign-a2a is a protocol helper, not an a2a-browser client, so no SDKs pointer is claimed.
+packages:
+- name: sovereign-a2a
+  language: python
+  registry: github
+  official: true
+  role: protocol-library
+  url: https://github.com/digiantnz/sovereign-a2a
+  install: pip install git+https://github.com/digiantnz/sovereign-a2a.git
+  version: null
+  published: null
+  last_push: '2026-06-29'
+  note: >-
+    Not on PyPI (pypi.org/pypi/sovereign-a2a/json 404) — installed from the git URL, so there is no registry version or
+    release date to read; last_push is the GitHub repository's pushed_at. README describes "A2A JSON-RPC 3.0 message
+    primitives for Python agents" with three classes and no dependencies; it does not mention a2a-browser.
+absent:
+- {registry: pypi, query: a2a-browser, status: 404}
+- {registry: pypi, query: sovereign-a2a, status: 404}
+- {registry: npm, query: '@digiantnz/a2a-browser', status: 404}
+- {registry: npm, query: a2a-browser (search), result: only third-party a2a packages}

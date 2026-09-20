@@ -1,0 +1,30 @@
+generated: '2026-09-19'
+method: probed
+source: live DNS/TLS/HTTP probes of apis.yml + OpenAPI hosts
+hosts:
+- host: digiant.nz
+  https: true
+  tls_cert_error: '[SSL: CERTIFICATE_VERIFY_FAILED] certificate verify failed: Hostname mismatch,
+    certificate is not valid for ''digiant.nz'''
+  hsts: null
+- host: a2aregistry.org
+  https: true
+  tls_version: TLSv1.3
+  cert_expires: Oct 31 19:34:00 2026 GMT
+  hsts: false
+- host: a2a-browser.digiant.nz
+  https: true
+  tls_version: TLSv1.3
+  cert_expires: Oct 21 21:14:11 2026 GMT
+  hsts: null
+domains:
+- domain: digiant.nz
+  dnssec: false
+  caa: []
+  spf: true
+  dmarc: false
+- domain: a2aregistry.org
+  dnssec: false
+  caa: []
+  spf: true
+  dmarc: false

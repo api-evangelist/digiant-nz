@@ -1,0 +1,28 @@
+generated: '2026-09-19'
+method: probed
+source: https://a2a-browser.digiant.nz/.well-known/agent.json (version, status), https://a2a-browser.digiant.nz/quote (contract_version, service_status), https://a2a-browser.digiant.nz/health, https://github.com/digiantnz (repos list), 2026-09-19/20
+versioning:
+  scheme: semver on the agent card; a separate contract_version on the quote document
+  current:
+    agent: 0.1.0-alpha
+    quote_contract: '1.0'
+    protocol: a2a/0.3 (self-declared)
+  header: none
+  status: 'alpha — free tier live, paid service in active development (agent card status field)'
+deprecation:
+  policy_url: null
+  sunset_header: not observed
+  deprecated_operations: []
+  note: no versioning or deprecation policy is published; the agent is pre-1.0 and marked alpha.
+status:
+  status_page: null
+  health_endpoint: https://a2a-browser.digiant.nz/health
+  health_observed: '{"status":"ok","backends":["searxng","ddg"],"playwright":true}'
+  service_status_endpoint: https://a2a-browser.digiant.nz/quote
+  service_status_observed: 'service_status: healthy, degradation_reason: null'
+  note: two JSON health signals but no human status page, incident history or SLA.
+sla: null
+support:
+  contact: 'operator.contact in the card is the bare hostname "a2a-browser.digiant.nz" — no email, issue tracker or support URL'
+  github: 'https://github.com/digiantnz/a2a-browser (named in the card) answered 404; the digiantnz GitHub user has four other public repos (last push 2026-06-29, sovereign-a2a)'
+changelog: null

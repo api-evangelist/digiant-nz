@@ -1,0 +1,20 @@
+generated: '2026-09-19'
+method: searched
+probe: true
+source: >-
+  Harvested artifacts from this run (well-known/, security/, lifecycle/, conformance/), the agent card and /quote document, and
+  live probes of the conventional paths on a2a-browser.digiant.nz (all 404: /accessibility, /accessibility/vpat,
+  /legal/subprocessors, /legal/dpa, /privacy/requests, /transparency, /security/sbom, /docs/data-residency,
+  /ai/transparency, /legal/report-content). digiant.nz itself cannot be probed over verified TLS (certificate hostname
+  mismatch) and 301s to an unresolvable Web3 domain, so no legal page of any kind was reachable.
+signals: {}
+observed_but_unmapped:
+- signal: data_retention_statement
+  value: 'zero — query payloads deleted on fulfillment'
+  source: https://a2a-browser.digiant.nz/quote
+  note: a one-line machine-readable retention claim; not a privacy policy, subprocessor list or DSR channel, so it maps to no canonical signal.
+- signal: stated_hosting_location
+  value: 'Christchurch, NZ (self-hosted HP Z440, per the agent card infrastructure block)'
+  source: https://a2a-browser.digiant.nz/.well-known/agent.json
+  note: a hardware/location disclosure, not a data-residency commitment; recorded for the reader, not asserted as DataResidency.
+note: No privacy policy, terms, accessibility, subprocessor, DSR, SBOM, transparency or AI-transparency page exists on any reachable host. Absence is the measurement.

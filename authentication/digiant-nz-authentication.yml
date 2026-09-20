@@ -1,0 +1,33 @@
+generated: '2026-09-19'
+method: searched
+source: https://a2a-browser.digiant.nz/.well-known/agent.json (identity block), https://a2a-browser.digiant.nz/quote, https://a2a-browser.digiant.nz/robots.txt; no OpenAPI exists to derive from
+docs: null
+summary:
+  types:
+  - public-key-identity
+  api_key_in: []
+  oauth2: false
+  openid_connect: false
+  signup_required: false
+schemes:
+- name: Ed25519PublicKeyIdentity
+  type: public-key-identity
+  scheme: ed25519
+  description: >-
+    "Supply your ed25519 public key on first request — becomes your agent_id and account key" (agent card identity block,
+    pubkey_exchange: true). There is no signup, no API key issuance and no OAuth flow: the calling agent's Ed25519 public key
+    is its account identifier; the free tier is rate-limited per key and paid credit (satoshis over Lightning, when it opens)
+    is presumably attached to the same key. The card does not state which header or JSON-RPC field carries the key or
+    whether requests must be signed — that detail requires the (404) GitHub repository or a live paid session, neither of
+    which was reachable.
+  sources:
+  - https://a2a-browser.digiant.nz/.well-known/agent.json
+- name: Anonymous
+  type: none
+  description: GET /.well-known/agent.json, /health and /quote answer without any credential; POST / accepts an unauthenticated JSON-RPC envelope (unknown methods answer -32601).
+  sources:
+  - https://a2a-browser.digiant.nz/robots.txt
+gaps:
+- header or field carrying the public key is undocumented
+- request signing / challenge-response is undocumented
+- payment binding between key and Lightning invoice is undocumented (paid tier not yet open)

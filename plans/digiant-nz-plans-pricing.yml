@@ -1,0 +1,40 @@
+generated: '2026-09-19'
+method: probed
+source: https://a2a-browser.digiant.nz/quote (machine-readable price quote, fetched 2026-09-20 02:52 UTC), https://a2a-browser.digiant.nz/.well-known/agent.json (tiers block)
+docs: null
+machine_readable: https://a2a-browser.digiant.nz/quote
+plan_count: 2
+currency: sats (BTC satoshis)
+model: >-
+  Account-less pay-per-query. A free FIFO tier is live at 10 requests/hour; the paid tier is quoted live per skill in
+  satoshis over Lightning but the card marks it "alpha — not yet open" (Arbitrum USDT/USDC testing, Lightning BTC in
+  development, Solana USDT/USDC planned). No signup, no subscription, no human pricing page.
+plans:
+- id: free
+  name: Free tier
+  price: 0
+  currency: sats
+  period: null
+  included: [browser/search, browser/fetch, FIFO queue]
+  limits: {requests_per_hour: 10}
+  status: live
+  source: https://a2a-browser.digiant.nz/.well-known/agent.json
+- id: paid
+  name: Paid (pay-per-query)
+  price: null
+  currency: sats
+  period: per query
+  unit_prices:
+    search: {price: 10, currency: sats, field: price_per_search_sats}
+    fetch: {price: 20, currency: sats, field: price_per_fetch_sats}
+  minimum_purchase: {amount: 1000, currency: sats, field: min_purchase_sats}
+  payment_rail: lightning
+  included: [browser/search, browser/fetch, 'fee+age priority matching engine']
+  limits: {}
+  status: 'alpha — not yet open (per the agent card); /quote nonetheless reports service_status healthy'
+  source: https://a2a-browser.digiant.nz/quote
+quote_document:
+  contract_version: '1.0'
+  data_retention: 'zero — query payloads deleted on fulfillment'
+  fields_observed: [price_per_search_sats, price_per_fetch_sats, min_purchase_sats, data_retention, payment_rail, contract_version, ts, service_status, degradation_reason]
+  note: The quote is regenerated per request (ts changes) and ignores query parameters; it is the only pricing statement the provider publishes.

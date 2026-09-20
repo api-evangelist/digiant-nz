@@ -1,0 +1,83 @@
+generated: '2026-09-19'
+method: probed
+source: >-
+  https://a2a-browser.digiant.nz/.well-known/agent.json, https://a2a-browser.digiant.nz/quote, https://a2a-browser.digiant.nz/health,
+  https://a2a-browser.digiant.nz/robots.txt, and the responses observed on GET /, OPTIONS /, POST / (JSON-RPC 2.0) and unknown
+  paths on 2026-09-20. No OpenAPI, docs site or repository was reachable, so this records only what the live surface states.
+description: >-
+  Cross-cutting behaviour of the a2a-browser agent surface: a single JSON-RPC 2.0 POST endpoint at the host root, Ed25519
+  public-key identity instead of API keys, a per-key hourly free-tier limit, an in-band X-Request-Id, JSON-RPC error
+  envelopes, and a read-only (retrieval) skill surface with a prepaid satoshi balance whose refund terms are unstated.
+base_url: https://a2a-browser.digiant.nz
+api_style: A2A 0.3 (self-declared) over JSON-RPC 2.0 at POST /; two JSON GET utility endpoints (/health, /quote); nginx front, FastAPI-shaped 405/404 bodies
+
+authentication:
+  style: public-key identity, no signup
+  mechanism: Ed25519 public key supplied on first request becomes agent_id and account key (agent card identity block)
+  anonymous: [GET /.well-known/agent.json, GET /health, GET /quote]
+  detail: authentication/digiant-nz-authentication.yml
+
+idempotency:
+  supported: false
+  coverage: none
+  mechanism: null
+  key_format: null
+  retention: null
+  note: >-
+    No Idempotency-Key header, request nonce or replay-protection statement anywhere on the published surface. Both skills
+    are retrievals (search, fetch); the only stateful effect of a call is the per-query fee, and the card does not say
+    whether a retried paid query is charged twice.
+
+dry_run:
+  mode: none
+  note: >-
+    No simulate/preview parameter is published. GET /quote returns the current per-skill price without executing anything,
+    which lets an agent plan spend but is a quote, not a rehearsal of the call.
+
+pagination:
+  style: none published
+  note: 'browser/search returns "EnrichedResult v3.0: 7 structured sections"; no cursor or page parameters are documented.'
+
+request_id:
+  header: X-Request-Id
+  observed: 32-hex value on every response (200, 404, 405)
+  echo_of_client_value: unknown
+
+versioning:
+  scheme: semver on the agent (0.1.0-alpha) and a contract_version field ("1.0") in the /quote document
+  header: none
+  detail: lifecycle/digiant-nz-lifecycle.yml
+
+errors:
+  envelope: 'JSON-RPC 2.0 error object {code, message} on POST /; {"detail": "..."} JSON on 405; nginx HTML on 404'
+  observed_codes: {'-32601': Method not found}
+  problem_json: false
+  detail: errors/digiant-nz-problem-types.yml
+
+rate_limiting:
+  published: free tier 10 requests/hour per agent key (FIFO); paid tier fee+age priority
+  headers: none observed
+  detail: rate-limits/digiant-nz-rate-limits.yml
+
+reversibility:
+  status: na
+  method: probed
+  summary: >-
+    The published skill surface is read-only — browser/search and browser/fetch retrieve and synthesise web content and
+    create no provider-side resource an agent could later undo. The only write-shaped action is prepaying satoshis for the
+    paid tier (min_purchase_sats 1000 in /quote), which is not yet open, and the provider publishes no refund, cancellation
+    or balance-withdrawal statement. Nothing here is graded because there is no reversal path to grade; recorded as na so it
+    leaves the denominator rather than scoring zero.
+  irreversible: []
+  reversals: []
+  window_docs: null
+
+data_retention:
+  statement: 'zero — query payloads deleted on fulfillment'
+  source: https://a2a-browser.digiant.nz/quote (data_retention field)
+
+security_headers_observed: ['Strict-Transport-Security: max-age=63072000; includeSubDomains; preload', 'X-Content-Type-Options: nosniff', 'X-Frame-Options: DENY']
+robots:
+  disallow: [/search, /fetch]
+  allow: [/.well-known/agent.json, /quote, /health]
+  note: the disallow was honoured — no crawler request was sent to the skill endpoints.

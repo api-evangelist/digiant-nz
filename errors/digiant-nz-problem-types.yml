@@ -1,0 +1,34 @@
+generated: '2026-09-19'
+method: probed
+source: responses observed on https://a2a-browser.digiant.nz/ (GET, OPTIONS, POST JSON-RPC) and unknown paths on 2026-09-20; no OpenAPI or error reference is published
+format: jsonrpc
+problem_json: false
+summary: >-
+  Three error shapes were observed and none is documented by the provider: JSON-RPC 2.0 error objects on the POST endpoint,
+  FastAPI-style {"detail": "..."} JSON on method mismatches, and a plain nginx HTML page on unknown paths. Skill-level errors
+  (rate-limit exhaustion, insufficient balance, fetch failures) could not be observed without calling /search or /fetch,
+  which robots.txt disallows.
+problem_types:
+- code: -32601
+  title: Method not found
+  http_status: 200
+  envelope: '{"jsonrpc":"2.0","id":<id>,"error":{"code":-32601,"message":"Method not found"}}'
+  remediation: use one of the card's skill ids (browser/search, browser/fetch) as the JSON-RPC method or params.skill — the exact method naming is undocumented
+  evidence: POST / with method tasks/get and with method tools/list, 2026-09-20
+- code: http-405
+  title: Method Not Allowed
+  http_status: 405
+  envelope: '{"detail":"Method Not Allowed"}'
+  headers: 'allow: POST'
+  remediation: the root, /search and /fetch accept POST only
+  evidence: GET / and OPTIONS /, GET /search, GET /fetch
+- code: http-404
+  title: Not Found
+  http_status: 404
+  envelope: nginx text/html "404 Not Found" page (548 bytes)
+  remediation: only /, /health, /quote and /.well-known/agent.json exist
+  evidence: /openapi.json, /docs, /mcp, /.well-known/agent-card.json and others
+undocumented:
+- rate limit exhaustion (free tier 10/hour) — status code and body unknown
+- insufficient prepaid balance (paid tier) — not yet open
+- degraded service — /quote carries service_status and degradation_reason fields (observed "healthy" / null), which is the only published degradation signal
