@@ -38,3 +38,23 @@ quote_document:
   data_retention: 'zero — query payloads deleted on fulfillment'
   fields_observed: [price_per_search_sats, price_per_fetch_sats, min_purchase_sats, data_retention, payment_rail, contract_version, ts, service_status, degradation_reason]
   note: The quote is regenerated per request (ts changes) and ignores query parameters; it is the only pricing statement the provider publishes.
+x-canonical:
+  generated: '2026-10-08'
+  vocabulary: all/0-working/economics/plans-canonical.yml
+  models:
+  - free
+  units: []
+  plans:
+  - name: Free tier
+    access: other
+    model: free
+    model_how: derived
+    units: []
+    periods: []
+  - name: Paid (pay-per-query)
+    access: other
+    model: unstated
+    model_how: derived
+    units: []
+    periods:
+    - other
